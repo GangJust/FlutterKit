@@ -132,7 +132,7 @@ class _KitButtonState extends State<KitButton> with SingleTickerProviderStateMix
                 style: widget.style ?? _defTextStyle,
                 child: Container(
                   alignment: widget.alignment,
-                  padding: widget.padding ?? EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                  padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                   child: widget.child,
                 ),
               ),

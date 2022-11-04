@@ -1,11 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../utils/math_util.dart';
 
-Future showKitDialog({
+Future<T?> showKitDialog<T extends Object?>({
   required BuildContext context,
   required Widget dialog,
   bool barrierDismissible = false,
@@ -26,28 +25,6 @@ Future showKitDialog({
     routeSettings: routeSettings,
     transitionDuration: duration,
     transitionBuilder: (ctx, anim1, anim2, child) => transitionsBuilder(context, anim1, anim2, child),
-  );
-}
-
-/// 需要getx，若未依赖getx，请注释掉该方法
-Future showGetKitDialog({
-  required Widget dialog,
-  bool barrierDismissible = false,
-  String? barrierLabel = "kitDialog",
-  Color barrierColor = const Color(0x80000000),
-  bool useRootNavigator = true,
-  RouteSettings? routeSettings,
-  Duration duration = const Duration(milliseconds: 200),
-  RouteTransitionsBuilder transitionsBuilder = defaultDialogAnimation,
-}) {
-  return Get.generalDialog(
-    barrierDismissible: barrierDismissible,
-    barrierLabel: barrierLabel,
-    barrierColor: barrierColor,
-    pageBuilder: (ctx, anim1, anim2) => dialog,
-    routeSettings: routeSettings,
-    transitionDuration: duration,
-    transitionBuilder: (ctx, anim1, anim2, child) => transitionsBuilder(ctx, anim1, anim2, child),
   );
 }
 
@@ -158,6 +135,7 @@ Widget defaultDialogAnimation(BuildContext context, Animation<double> anim1, Ani
   );
 }
 
+/// Dialog视图
 class KitDialog extends StatelessWidget {
   final Widget? title;
   final EdgeInsets titlePadding;
@@ -233,7 +211,7 @@ class KitDialog extends StatelessWidget {
 
     return Container(
       padding: contentPadding,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
       ),
       child: content,
@@ -245,7 +223,7 @@ class KitDialog extends StatelessWidget {
         ? themeData.textTheme.button?.copyWith(color: themeData.textTheme.bodyText2?.color)
         : themeData.textTheme.button?.copyWith(color: themeData.colorScheme.secondary);
     var borderRadius = BorderRadius.only(bottomLeft: radius);
-    var border = showButtonsBorder ? Border(top: BorderSide(color: themeData.dividerColor, width: 0.2)) : Border();
+    var border = showButtonsBorder ? Border(top: BorderSide(color: themeData.dividerColor, width: 0.2)) : const Border();
     if (confirm == null) {
       textStyle = themeData.textTheme.button?.copyWith(color: themeData.colorScheme.secondary);
       borderRadius = BorderRadius.only(bottomLeft: radius, bottomRight: radius);
@@ -257,13 +235,13 @@ class KitDialog extends StatelessWidget {
       textStyle: textStyle,
       child: InkWell(
         borderRadius: borderRadius,
+        onTap: cancelCallBack,
         child: Container(
           alignment: Alignment.center,
           padding: bottomButtonWidgetPadding,
           decoration: BoxDecoration(border: border),
           child: cancel,
         ),
-        onTap: cancelCallBack,
       ),
     );
   }
@@ -272,26 +250,26 @@ class KitDialog extends StatelessWidget {
     var textStyle = !reverseColor
         ? themeData.textTheme.button?.copyWith(color: themeData.textTheme.bodyText2?.color)
         : themeData.textTheme.button?.copyWith(color: themeData.colorScheme.secondary);
-    var _borderRadius = BorderRadius.only(bottomRight: radius);
-    var _border = showButtonsBorder ? Border(top: BorderSide(color: themeData.dividerColor, width: 0.2)) : Border();
+    var borderRadius = BorderRadius.only(bottomRight: radius);
+    var border = showButtonsBorder ? Border(top: BorderSide(color: themeData.dividerColor, width: 0.2)) : const Border();
     if (cancel == null) {
       textStyle = themeData.textTheme.button?.copyWith(color: themeData.colorScheme.secondary);
-      _borderRadius = BorderRadius.only(bottomRight: radius, bottomLeft: radius);
+      borderRadius = BorderRadius.only(bottomRight: radius, bottomLeft: radius);
     }
 
     return Material(
       color: themeData.cardColor,
-      borderRadius: _borderRadius,
+      borderRadius: borderRadius,
       textStyle: textStyle,
       child: InkWell(
-        borderRadius: _borderRadius,
+        borderRadius: borderRadius,
+        onTap: confirmCallBack,
         child: Container(
           alignment: Alignment.center,
           padding: bottomButtonWidgetPadding,
-          decoration: BoxDecoration(border: _border),
+          decoration: BoxDecoration(border: border),
           child: confirm,
         ),
-        onTap: confirmCallBack,
       ),
     );
   }
